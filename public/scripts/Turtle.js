@@ -13,10 +13,10 @@ class Turtle {
     this.processing = false
     this.processingInterval = processingInterval
     this.commandTimer = null
+    this.dupleCmds = ['fd', 'bk', 'lt', 'rt']
+    this.singleCmds = ['pu', 'pd']
   }
   
-  static dupleCmds = ['fd', 'bk', 'lt', 'rt']
-  static singleCmds = ['pu', 'pd']
   
   setAngle(angle) {
     const { size } = this
@@ -106,12 +106,12 @@ class Turtle {
     const tokens = cmdStr.split(' ').map(token => token.toLowerCase())
     try {
       while (tokens.length) {
-        if (validSingle(tokens[0])) {
+        if (validSingle(tokens[0], this)) {
           this.commandList = [
             ...this.commandList,
             { command: tokens.shift() }
           ]
-        } else if (validDuple(tokens[0], tokens[1])) {
+        } else if (validDuple(tokens[0], tokens[1], this)) {
           this.commandList = [
             ...this.commandList,
             {
@@ -154,13 +154,13 @@ class Turtle {
 
 }
 
-function validDuple(cmd, val) {
-  const { dupleCmds } = Turtle
+function validDuple(cmd, val, turtle) {
+  const { dupleCmds } = turtle
   return dupleCmds.includes(cmd) && !isNaN(parseInt(val))
 }
 
-function validSingle(cmd) {
-  const { singleCmds } = Turtle
+function validSingle(cmd, turtle) {
+  const { singleCmds } = turtle
   return singleCmds.includes(cmd)
 }
 
