@@ -22,6 +22,13 @@ export class Vec2 {
     return 
   }
 
+  rotate(angle) {
+    const { _x, _y } = this
+    const { PI, cos, sin } = Math
+    const rad = angle * ( PI / 180 )
+    this.setVec(_x * cos(rad) - _y * sin(rad), _x * sin(rad) + _y * cos(rad))
+  }
+
   setVec (x, y) {
     this._x = x,
     this._y = y

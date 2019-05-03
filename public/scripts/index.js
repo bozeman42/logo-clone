@@ -16,7 +16,7 @@ const { canvas, ctx } = mainLayer
 canvasDiv.appendChild(canvas)
 
 const drawLayer = new Layer(CANVAS_WIDTH, CANVAS_HEIGHT)
-const turtle = new Turtle(400, 300, 0, 5, drawLayer)
+const turtle = new Turtle(400, 300, 0, 6, drawLayer)
 turtle.draw(ctx)
 
 clearButton.onclick = () => {
@@ -29,5 +29,11 @@ execute.onclick = e => {
   const commandStr = input.value
   turtle.process(commandStr)
   mainLayer.clear()
+  turtle.draw(ctx)
+}
+
+canvasDiv.onclick = e => {
+  mainLayer.clear()
+  turtle.position.setVec(e.offsetX, e.offsetY)
   turtle.draw(ctx)
 }

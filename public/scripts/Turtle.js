@@ -18,14 +18,22 @@ class Turtle {
     const { size } = this
     this.angle = angle
     this.direction.setByAngLen(this.angle - 90, size + size / 5)
+    return this
   }
 
   rt(angle) {
     this.setAngle(this.angle + angle)
+    return this
   }
 
   lt(angle) {
     this.rt(-angle)
+    return this
+  }
+
+  setSize(size) {
+    this.size = size
+    return this
   }
 
   fd(length) {
@@ -39,18 +47,22 @@ class Turtle {
       ctx.stroke()
     }
     this.position.translate(dx, dy)
+    return this
   }
 
   bk(length) {
     this.fd(-length)
+    return this
   }
 
   pu() {
     this.penDown = false
+    return this
   }
 
   pd() {
     this.penDown = true
+    return this
   }
 
   draw(ctx) {
@@ -76,6 +88,7 @@ class Turtle {
     ctx.arc(x + headX, y + headY, size / 3.5, 0, Math.PI * 2)
     ctx.stroke()
     ctx.drawImage(this._drawingLayer.canvas, 0,0)
+    return this
   }
 
   process(cmdStr) {
@@ -107,20 +120,8 @@ class Turtle {
       const { command, argument } = cmd
       this[command](argument)
     })
+    return this
   }
-
-}
-
-function drawTurtle(turtle, ctx) {
-  const size = dirVec.magnitude
-  ctx.beginPath()
-  ctx.arc(x,y,size,0,Math.PI * 2)
-  ctx.stroke()
-  ctx.beginPath()
-  ctx.moveTo(x,y)
-  const [x1,y1] = dirVec.direction(size + (size / 5))
-  ctx.lineTo(x + x1,y + y1)
-  ctx.stroke()
 
 }
 
