@@ -12,3 +12,11 @@
   font-family: monospace;
   font-size: 15pt;
 }
+
+main {
+  float: left;
+}
+
+#commandList {
+  float: left;
+}

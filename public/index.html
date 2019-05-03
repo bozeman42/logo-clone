@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,13 +8,14 @@
   <link rel="stylesheet" href="./styles/style.css">
   <title>Logo</title>
 </head>
+
 <body>
   <main id="main-container">
     <div id="logo">
     </div>
     <div>
       <p>You can click on the drawing space to place the turtle wherever you wish.</p>
-      <textarea id="input">rt 144 fd 100</textarea>
+      <textarea id="input">fd 100 rt 144 fd 100 rt 144 fd 100 rt 144 fd 100 rt 144 fd 100</textarea>
       <div>
         <label for="size-input">Size</label>
         <input id="size-input" type="range" min=3 max=30 value=8 />
@@ -22,6 +24,24 @@
       <button id="clear">Clear</button>
     </div>
   </main>
+  <div id="commandList">
+    <h2>Commands</h2>
+    <dl>
+      <dt>fd 20</dt>
+      <dd>Move the turtle forward 20 pixels</dd>
+      <dt>bk 20</dt>
+      <dd>Move the turtle backward 20 pixels</dd>
+      <dt>rt 20</dt>
+      <dd>Rotate the turtle 20 degrees clockwise</dd>
+      <dt>lt 20</dt>
+      <dd>Rotate the turtle 20 degrees counter-clockwise</dd>
+      <dt>pu</dt>
+      <dd>Pen up: allows you to move the turtle without drawing its path</dd>
+      <dt>pd</dt>
+      <dd>Pen down: the turtle will draw its path as it moves via the other commands</dd>
+    </dl>
+  </div>
   <script type="module" src="./scripts/index.js"></script>
 </body>
+
 </html>
