@@ -13,6 +13,11 @@
   font-size: 15pt;
 }
 
+dt {
+  font-family: monospace;
+  font-weight: 800;
+}
+
 main {
   float: left;
 }
