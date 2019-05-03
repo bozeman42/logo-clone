@@ -5,11 +5,16 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "build": "rollup ./public/scripts/index.js --format \"umd\" --file ./public/scripts/bundle.js",
+    "deploy": "yarn build && netlify deploy --prod"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "rollup": "^1.11.0"
   }
 }
