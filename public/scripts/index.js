@@ -10,6 +10,8 @@ const execute = document.getElementById('execute')
 const canvasDiv = document.getElementById('logo')
 const clearButton = document.getElementById('clear')
 const sizeInput = document.getElementById('size-input')
+const durationInput = document.getElementById('duration-input')
+
 
 const turtleLayer = new Layer(CANVAS_WIDTH, CANVAS_HEIGHT)
 const { canvas, ctx } = turtleLayer
@@ -17,13 +19,17 @@ const { canvas, ctx } = turtleLayer
 canvasDiv.appendChild(canvas)
 
 const drawLayer = new Layer(CANVAS_WIDTH, CANVAS_HEIGHT)
-const turtle = new Turtle(400, 300, 0, parseInt(sizeInput.value), drawLayer)
+const turtle = new Turtle(400, 300, 0, parseInt(sizeInput.value), parseInt(durationInput.value), drawLayer)
 turtle.draw(ctx)
 
 sizeInput.oninput = e => {
   turtle.setSize(parseInt(e.target.value))
   turtleLayer.clear()
   turtle.draw(ctx)
+}
+
+durationInput.oninput = e => {
+  turtle.setProcessingInterval(parseInt(e.target.value), turtleLayer)
 }
 
 clearButton.onclick = () => {
@@ -34,7 +40,7 @@ clearButton.onclick = () => {
 
 execute.onclick = e => {
   const commandStr = input.value
-  turtle.process(commandStr)
+  turtle.process(commandStr, turtleLayer)
   turtleLayer.clear()
   turtle.draw(ctx)
 }

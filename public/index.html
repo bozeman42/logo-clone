@@ -13,10 +13,14 @@
     </div>
     <div>
       <p>You can click on the drawing space to place the turtle wherever you wish.</p>
-      <textarea id="input">rt 144 fd 100</textarea>
+      <textarea id="input">fd 100 rt 144 fd 100 rt 144 fd 100 rt 144 fd 100 rt 144 fd 100</textarea>
       <div>
         <label for="size-input">Size</label>
         <input id="size-input" type="range" min=3 max=30 value=8 />
+      </div>
+      <div>
+        <label for="duration-input">Time per step</label>
+        <input id="duration-input" type="range" min=0 max=250 value=10 />
       </div>
       <button id="execute">Execute</button>
       <button id="clear">Clear</button>
