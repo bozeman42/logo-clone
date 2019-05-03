@@ -103,7 +103,7 @@ class Turtle {
   }
 
   process(cmdStr, layer) {
-    const tokens = cmdStr.split(' ')
+    const tokens = cmdStr.split(' ').map(token => token.toLowerCase())
     try {
       while (tokens.length) {
         if (validSingle(tokens[0])) {
