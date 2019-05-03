@@ -1,7 +1,7 @@
 import { Vec2 } from './math.js'
 
 class Turtle {
-  constructor(x, y, angle, size = 25, drawingLayer) {
+  constructor(x, y, angle, size = 25, processingInterval = 10, drawingLayer) {
     this.position = new Vec2(x,y)
     this.size = size
     this.direction = new Vec2(0,0)
@@ -9,6 +9,10 @@ class Turtle {
     this.setAngle(angle)
     this._drawingLayer = drawingLayer
     this.penDown = true
+    this.commandList = []
+    this.processing = false
+    this.processingInterval = processingInterval
+    this.commandTimer = null
   }
   
   static dupleCmds = ['fd', 'bk', 'lt', 'rt']
@@ -19,6 +23,13 @@ class Turtle {
     this.angle = angle
     this.direction.setByAngLen(this.angle - 90, size + size / 5)
     return this
+  }
+
+  setProcessingInterval(time, layer) {
+    this.processingInterval = time
+    clearInterval(this.commandTimer)
+    this.processing = false
+    this.process('', layer)
   }
 
   rt(angle) {
@@ -91,19 +102,18 @@ class Turtle {
     return this
   }
 
-  process(cmdStr) {
+  process(cmdStr, layer) {
     const tokens = cmdStr.split(' ')
-    let commandList = []
     try {
       while (tokens.length) {
         if (validSingle(tokens[0])) {
-          commandList = [
-            ...commandList,
+          this.commandList = [
+            ...this.commandList,
             { command: tokens.shift() }
           ]
         } else if (validDuple(tokens[0], tokens[1])) {
-          commandList = [
-            ...commandList,
+          this.commandList = [
+            ...this.commandList,
             {
               command: tokens.shift(),
               argument: parseInt(tokens.shift())
@@ -116,10 +126,29 @@ class Turtle {
     } catch (error) {
       console.error(error)
     }
-    commandList.forEach(cmd => {
-      const { command, argument } = cmd
-      this[command](argument)
-    })
+
+    // use this for maximum speed processing
+    // this.commandList.forEach(cmd => {
+    //   const { command, argument } = cmd
+    //   this[command](argument)
+    // })
+
+    
+    if (!this.processing) {
+      this.processing = true
+      this.commandTimer = setInterval(() => {
+        const command = this.commandList.shift()
+        console.log(command)
+        if (command) {
+          this[command.command](command.argument)
+          layer.clear()
+          this.draw(layer.ctx)
+        } else {
+          this.processing = false
+          clearInterval(this.commandTimer)
+        }
+      }, this.processingInterval)
+    }
     return this
   }
 
