@@ -54,21 +54,31 @@ class Turtle {
   }
 
   draw(ctx) {
-    const {size, position, direction} = this
+    const { position, direction, size } = this
     const [x,y] = position.coords
+    const [ dirX, dirY ] = direction.direction(size)
+    const drawVec = new Vec2(dirX, dirY)
     ctx.beginPath()
     ctx.arc(x,y,size,0,Math.PI * 2)
     ctx.stroke()
+    
+    drawVec.rotate(45)
+    for (let i = 0; i < 4; i++) {
+      ctx.beginPath()
+      let [legx, legy] = drawVec.direction(size + size / 4)
+      ctx.arc(x + legx, y + legy, size / 4, 0, Math.PI * 2)
+      ctx.stroke()
+      drawVec.rotate(90)
+    }
+    drawVec.rotate(-45)
     ctx.beginPath()
-    ctx.moveTo(x,y)
-    const [x1,y1] = direction.direction(size + (size / 5))
-    ctx.lineTo(x + x1,y + y1)
+    const [headX, headY] = drawVec.direction(size + size / 3.5)
+    ctx.arc(x + headX, y + headY, size / 3.5, 0, Math.PI * 2)
     ctx.stroke()
     ctx.drawImage(this._drawingLayer.canvas, 0,0)
   }
 
   process(cmdStr) {
-    const { dupleCmds, singleCmds } = Turtle
     const tokens = cmdStr.split(' ')
     let commandList = []
     try {
@@ -87,7 +97,7 @@ class Turtle {
             }
           ]
         } else {
-          throw new Error(`Invalid token '${token[0]}`)
+          console.error(`Invalid token: ${tokens.shift()}`)
         }
       }
     } catch (error) {
@@ -98,6 +108,19 @@ class Turtle {
       this[command](argument)
     })
   }
+
+}
+
+function drawTurtle(turtle, ctx) {
+  const size = dirVec.magnitude
+  ctx.beginPath()
+  ctx.arc(x,y,size,0,Math.PI * 2)
+  ctx.stroke()
+  ctx.beginPath()
+  ctx.moveTo(x,y)
+  const [x1,y1] = dirVec.direction(size + (size / 5))
+  ctx.lineTo(x + x1,y + y1)
+  ctx.stroke()
 
 }
 
