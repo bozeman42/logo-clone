@@ -11,8 +11,8 @@ const canvasDiv = document.getElementById('logo')
 const clearButton = document.getElementById('clear')
 const sizeInput = document.getElementById('size-input')
 
-const mainLayer = new Layer(CANVAS_WIDTH, CANVAS_HEIGHT)
-const { canvas, ctx } = mainLayer
+const turtleLayer = new Layer(CANVAS_WIDTH, CANVAS_HEIGHT)
+const { canvas, ctx } = turtleLayer
 
 canvasDiv.appendChild(canvas)
 
@@ -22,12 +22,12 @@ turtle.draw(ctx)
 
 sizeInput.oninput = e => {
   turtle.setSize(parseInt(e.target.value))
-  mainLayer.clear()
+  turtleLayer.clear()
   turtle.draw(ctx)
 }
 
 clearButton.onclick = () => {
-  mainLayer.clear()
+  turtleLayer.clear()
   drawLayer.clear()
   turtle.draw(ctx)
 }
@@ -35,12 +35,12 @@ clearButton.onclick = () => {
 execute.onclick = e => {
   const commandStr = input.value
   turtle.process(commandStr)
-  mainLayer.clear()
+  turtleLayer.clear()
   turtle.draw(ctx)
 }
 
 canvasDiv.onclick = e => {
-  mainLayer.clear()
+  turtleLayer.clear()
   turtle.position.setVec(e.offsetX, e.offsetY)
   turtle.draw(ctx)
 }
