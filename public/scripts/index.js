@@ -1,5 +1,4 @@
 import Turtle from './Turtle.js'
-import { Vec2 } from './math.js'
 import Layer from './Layer.js'
 
 const CANVAS_WIDTH = 800

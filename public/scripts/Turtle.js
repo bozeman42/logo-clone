@@ -20,8 +20,8 @@ class Turtle {
   
   setAngle(angle) {
     const { size } = this
-    this.angle = angle
-    this.direction.setByAngLen(this.angle - 90, size + size / 5)
+    this._angle = angle
+    this.direction.setByAngLen(this._angle - 90, size + size / 5)
     return this
   }
 
@@ -33,7 +33,7 @@ class Turtle {
   }
 
   rt(angle) {
-    this.setAngle(this.angle + angle)
+    this.setAngle(this._angle + angle)
     return this
   }
 
@@ -126,14 +126,6 @@ class Turtle {
     } catch (error) {
       console.error(error)
     }
-
-    // use this for maximum speed processing
-    // this.commandList.forEach(cmd => {
-    //   const { command, argument } = cmd
-    //   this[command](argument)
-    // })
-
-    
     if (!this.processing) {
       this.processing = true
       this.commandTimer = setInterval(() => {
@@ -141,7 +133,6 @@ class Turtle {
         console.log(command)
         if (command) {
           this[command.command](command.argument)
-          layer.clear()
           this.draw(layer.ctx)
         } else {
           this.processing = false
@@ -151,7 +142,6 @@ class Turtle {
     }
     return this
   }
-
 }
 
 function validDuple(cmd, val, turtle) {
