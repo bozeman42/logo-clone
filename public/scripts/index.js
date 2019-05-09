@@ -10,7 +10,7 @@ const canvasDiv = document.getElementById('logo')
 const clearButton = document.getElementById('clear')
 const sizeInput = document.getElementById('size-input')
 const durationInput = document.getElementById('duration-input')
-
+const display = document.getElementById('commandQueue')
 
 const turtleLayer = new Layer(CANVAS_WIDTH, CANVAS_HEIGHT)
 const { canvas, ctx } = turtleLayer
@@ -18,7 +18,7 @@ const { canvas, ctx } = turtleLayer
 canvasDiv.appendChild(canvas)
 
 const drawLayer = new Layer(CANVAS_WIDTH, CANVAS_HEIGHT)
-const turtle = new Turtle(400, 300, 0, parseInt(sizeInput.value), parseInt(durationInput.value), drawLayer)
+const turtle = new Turtle(400, 300, 0, parseInt(sizeInput.value), parseInt(durationInput.value), drawLayer, display)
 turtle.draw(ctx)
 
 sizeInput.oninput = e => {

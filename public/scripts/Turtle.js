@@ -1,7 +1,7 @@
 import { Vec2 } from './math.js'
 
 class Turtle {
-  constructor(x, y, angle, size = 25, processingInterval = 10, drawingLayer) {
+  constructor(x, y, angle, size = 25, processingInterval = 10, drawingLayer, commandDisplay) {
     this.position = new Vec2(x,y)
     this.size = size
     this.direction = new Vec2(0,0)
@@ -13,8 +13,9 @@ class Turtle {
     this.processing = false
     this.processingInterval = processingInterval
     this.commandTimer = null
+    this.commandDisplay = commandDisplay
     this.dupleCmds = ['fd', 'bk', 'lt', 'rt']
-    this.singleCmds = ['pu', 'pd']
+    this.singleCmds = ['pu', 'pd', 'cs']
   }
   
   
@@ -45,6 +46,11 @@ class Turtle {
   setSize(size) {
     this.size = size
     return this
+  }
+
+  cs () {
+    this._drawingLayer.clear()
+    this._drawingLayer.ctx.stroke()
   }
 
   fd(length) {
@@ -102,6 +108,29 @@ class Turtle {
     return this
   }
 
+  displayCommands() {
+    this.commandDisplay.innerHTML = ''
+    const list = document.createElement('ul')
+    const count = document.createElement('p')
+    count.innerText = `Commands queued: ${this.commandList.length}`
+    this.commandDisplay.appendChild(count)
+    this.commandList.forEach((cmd, index) => {
+      const item = document.createElement('li')
+      let textType
+      if (index === 0) {
+        textType = document.createElement('h2')
+      } else {
+        textType = document.createElement('p')
+      }
+      const { command, argument } = cmd
+      const text = `${command}${(argument ? ` ${argument}` : null)}`
+      textType.innerText = text
+      item.appendChild(textType)
+      list.appendChild(item)
+    })
+    this.commandDisplay.appendChild(list)
+  }
+
   process(cmdStr, layer) {
     const tokens = cmdStr.split(' ').map(token => token.toLowerCase())
     try {
@@ -123,6 +152,7 @@ class Turtle {
           console.error(`Invalid token: ${tokens.shift()}`)
         }
       }
+      this.displayCommands()
     } catch (error) {
       console.error(error)
     }
@@ -133,7 +163,9 @@ class Turtle {
         console.log(command)
         if (command) {
           this[command.command](command.argument)
+          layer.clear()
           this.draw(layer.ctx)
+          this.displayCommands()
         } else {
           this.processing = false
           clearInterval(this.commandTimer)

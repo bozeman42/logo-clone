@@ -14,6 +14,7 @@ class Layer {
   }
 
   clear() {
+    this.ctx.beginPath()
     this.ctx.clearRect(0,0,this._width, this._height)
   }
   draw(ctx) {

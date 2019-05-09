@@ -25,3 +25,8 @@ main {
 #commandList {
   float: left;
 }
+
+#commandQueue {
+  height: 100vh;
+  overflow-y: scroll;
+}

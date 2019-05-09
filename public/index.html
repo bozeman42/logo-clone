@@ -22,7 +22,7 @@
       </div>
       <div>
         <label for="duration-input">Time per step</label>
-        <input id="duration-input" type="range" min=0 max=250 value=10 />
+        <input id="duration-input" type="range" min=0 max=1000 value=10 />
       </div>
       <button id="execute">Execute</button>
       <button id="clear">Clear</button>
@@ -44,6 +44,8 @@
       <dt>pd</dt>
       <dd>Pen down: the turtle will draw its path as it moves via the other commands</dd>
     </dl>
+  </div>
+  <div id="commandQueue">
   </div>
   <script src="./scripts/bundle.js"></script>
 </body>
