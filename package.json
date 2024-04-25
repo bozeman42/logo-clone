@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js",
-    "build": "rollup ./public/scripts/index.js --format \"umd\" --file ./public/scripts/bundle.js",
+    "build": "rollup ./src/index.js --format \"umd\" --file ./public/scripts/bundle.js",
     "deploy": "yarn build && netlify deploy --prod"
   },
   "author": "",
