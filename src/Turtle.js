@@ -14,6 +14,7 @@ class Turtle {
     this.processingInterval = processingInterval
     this.commandTimer = null
     this.commandDisplay = commandDisplay
+    this.blockCmds = [ 'repeat' ]
     this.dupleCmds = ['fd', 'bk', 'lt', 'rt']
     this.singleCmds = ['pu', 'pd', 'cs']
   }
@@ -58,6 +59,7 @@ class Turtle {
     if (this.penDown) {
       const [ x, y ] = this.position.coords
       const { ctx } = this._drawingLayer
+      ctx.strokeStyle = this.color
       ctx.beginPath()
       ctx.moveTo(x,y)
       ctx.lineTo(x + dx, y + dy)
@@ -88,6 +90,7 @@ class Turtle {
     const [ dirX, dirY ] = direction.direction(size)
     const drawVec = new Vec2(dirX, dirY)
     ctx.beginPath()
+    ctx.strokeStyle = this.color
     ctx.arc(x,y,size,0,Math.PI * 2)
     ctx.stroke()
     
@@ -131,7 +134,7 @@ class Turtle {
     this.commandDisplay.appendChild(list)
   }
 
-  process(cmdStr, layer) {
+  buildCommandList(cmdStr) {
     const tokens = cmdStr.split(' ').map(token => token.toLowerCase())
     try {
       while (tokens.length) {
@@ -148,6 +151,30 @@ class Turtle {
               argument: parseInt(tokens.shift())
             }
           ]
+        } else if (isValidRepeat(tokens, this)) {
+          const [cmd, repeatCountStr] = tokens
+          const repeatCount = parseInt(repeatCountStr)
+          const repeatBlock = []
+          tokens.shift()
+          tokens.shift()
+          tokens.shift()
+          let openBracketCount = 0
+          while (openBracketCount !== 0 || tokens[0] !== ']') {
+            if (tokens[0] === '[') {
+              openBracketCount++
+            }
+            if (tokens[0] === ']') {
+              openBracketCount--
+            }
+            repeatBlock.push(tokens.shift())
+          }
+          tokens.shift()
+          let repeatCommandString = repeatBlock.join(' ')
+          let resultString = ''
+          for (let i = 0; i < repeatCount; i++) {
+            resultString += repeatCommandString + ' '
+          }
+          this.buildCommandList(resultString)
         } else {
           console.error(`Invalid token: ${tokens.shift()}`)
         }
@@ -156,13 +183,21 @@ class Turtle {
     } catch (error) {
       console.error(error)
     }
+  }
+
+  process(cmdStr, layer) {
+    this.buildCommandList(cmdStr)
     if (!this.processing) {
       this.processing = true
       this.commandTimer = setInterval(() => {
         const command = this.commandList.shift()
         console.log(command)
         if (command) {
-          this[command.command](command.argument)
+          if (isValidColor(command.command)) {
+            this.color = command.command
+          } else {
+            this[command.command](command.argument)
+          }
           layer.clear()
           this.draw(layer.ctx)
           this.displayCommands()
@@ -183,7 +218,25 @@ function validDuple(cmd, val, turtle) {
 
 function validSingle(cmd, turtle) {
   const { singleCmds } = turtle
-  return singleCmds.includes(cmd)
+  return singleCmds.includes(cmd) || isValidColor(cmd)
+}
+
+function isValidRepeat(tokens, turtle) {
+  const [cmd, value, separator, ...rest] = tokens
+  const { blockCmds } = turtle
+  return (
+    blockCmds.includes(cmd) &&
+    !isNaN(parseInt(value)) &&
+    separator === '[' &&
+    rest.includes(']')
+  )
+}
+
+function isValidColor(colorString) {
+  const s = new Option().style
+  s.color = colorString
+
+  return s.color === colorString.toLowerCase()
 }
 
 export default Turtle
