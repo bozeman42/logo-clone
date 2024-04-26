@@ -15,7 +15,7 @@
     </div>
     <div>
       <p>You can click on the drawing space to place the turtle wherever you wish.</p>
-      <textarea id="input">fd 100 rt 144 fd 100 rt 144 fd 100 rt 144 fd 100 rt 144 fd 100</textarea>
+      <textarea id="input">red rt 60 fd 100 orange rt 60 fd 100 yellow rt 60 fd 100 green rt 60 fd 100 blue rt 60 fd 100 violet rt 60 fd 100 pu rt 120 fd 50 lt 120 black pd repeat 6 [ rt 60 fd 50 ]</textarea>
       <div>
         <label for="size-input">Size</label>
         <input id="size-input" type="range" min=3 max=30 value=8 />
@@ -43,6 +43,10 @@
       <dd>Pen up: allows you to move the turtle without drawing its path</dd>
       <dt>pd</dt>
       <dd>Pen down: the turtle will draw its path as it moves via the other commands</dd>
+      <dt>repeat 4 [ fd 100 rt 90 ]</dt>
+      <dd>repeat the commands inside the brackets. Spaces are required around the brackets.</dd>
+      <dt>[colorname] e.g. black or deepskyblue</dt>
+      <dd>change the pen color to a named web color of your choice</dd>
     </dl>
   </div>
   <div id="commandQueue">

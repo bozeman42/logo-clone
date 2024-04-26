@@ -117,20 +117,21 @@ class Turtle {
     const count = document.createElement('p')
     count.innerText = `Commands queued: ${this.commandList.length}`
     this.commandDisplay.appendChild(count)
-    this.commandList.forEach((cmd, index) => {
+    const maxListLength = Math.min(10, this.commandList.length)
+    for (let i = 0; i < maxListLength; i++) {
       const item = document.createElement('li')
       let textType
-      if (index === 0) {
+      if (i === 0) {
         textType = document.createElement('h2')
       } else {
         textType = document.createElement('p')
       }
-      const { command, argument } = cmd
-      const text = `${command}${(argument ? ` ${argument}` : null)}`
+      const { command, argument } = this.commandList[i]
+      const text = `${command}${(argument ? ` ${argument}` : '')}`
       textType.innerText = text
       item.appendChild(textType)
       list.appendChild(item)
-    })
+    }
     this.commandDisplay.appendChild(list)
   }
 
@@ -186,7 +187,9 @@ class Turtle {
   }
 
   process(cmdStr, layer) {
-    this.buildCommandList(cmdStr)
+    if (cmdStr !== '') {
+      this.buildCommandList(cmdStr)
+    }
     if (!this.processing) {
       this.processing = true
       this.commandTimer = setInterval(() => {
